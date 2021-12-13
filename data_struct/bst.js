@@ -45,8 +45,9 @@ class BinarySearchTree {
     if(!this.root) {
       return false;
     }
+
     // parent of node to remove
-    const firstParent = this._find_parent_recurse(this.root, value);
+    const firstParent = this.root.value === value ? new Node : this._find_parent_recurse(this.root, value);
     const nodeToRemove = this._find_recurse(this.root, value);
 
     if(nodeToRemove.right) {
@@ -56,23 +57,20 @@ class BinarySearchTree {
     }
 
     const change_pointers = () => {
-      if(nodeToRemove === this.root) {
-        replacingNode.right = nodeToRemove.right;
-        replacingNode.left = nodeToRemove.left;
-        this.root = replacingNode;
+      replacingNode.right = nodeToRemove.right;
+      replacingNode.left = nodeToRemove.left;
+      if(firstParent.right === nodeToRemove) {
+        firstParent.right = replacingNode;
       } else {
-        replacingNode.right = nodeToRemove.right;
-        replacingNode.left = nodeToRemove.left;
-        if(firstParent.right === nodeToRemove) {
-          firstParent.right = replacingNode;
-        } else {
-          firstParent.left = replacingNode;
-        }
+        firstParent.left = replacingNode;
       }
     }
 
     // node to remove has no children
     if(!nodeToRemove.right && !nodeToRemove.left) {
+      if(nodeToRemove.value === this.root.value) {
+        this.root = null;
+      }
       if(firstParent.left === nodeToRemove) {
         firstParent.left = null;
       } else { 
@@ -82,6 +80,9 @@ class BinarySearchTree {
 
     // node to remove has left child but no right child
     if(!nodeToRemove.right && nodeToRemove.left) {
+        if(nodeToRemove.value === this.root.value) {
+          this.root = this.root.left;
+        }
         if(firstParent.right === nodeToRemove) {
           firstParent.right = nodeToRemove.left;
         } else {
@@ -91,6 +92,9 @@ class BinarySearchTree {
 
     // node to remove has right child
     if(nodeToRemove.right) {
+      if(nodeToRemove === this.root) {
+        this.root = replacingNode;
+      }
 
       // replacing node has no children
       if(!replacingNode.right && !replacingNode.left) {
@@ -170,13 +174,13 @@ tree.insert(170)
 tree.insert(15)
 tree.insert(1)
 
-tree.remove(4);
-tree.remove(6);
-tree.remove(20);
-tree.remove(9);
-tree.remove(170);
-tree.remove(15);
+// tree.remove(4);
+// tree.remove(6);
+// tree.remove(20);
 tree.remove(1);
+tree.remove(15);
+tree.remove(170);
+tree.remove(9);
 const treeString = JSON.stringify(traverse(tree.root));
 console.log(treeString);
 
