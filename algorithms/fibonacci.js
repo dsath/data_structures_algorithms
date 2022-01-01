@@ -25,8 +25,8 @@ function fibonacciIterative(n){
 
   return first;
 }
-let iterative = fibonacciIterative(15);
-console.log(iterative);
+// let iterative = fibonacciIterative(15);
+// console.log(iterative);
 
 function fibonacciRecursive(n) {
   if(n < 2) {
@@ -36,5 +36,5 @@ function fibonacciRecursive(n) {
   
 }
 
-let recursive = fibonacciRecursive(15)
+let recursive = fibonacciRecursive(50)
 console.log(recursive);
