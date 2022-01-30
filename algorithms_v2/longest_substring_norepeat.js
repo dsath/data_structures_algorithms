@@ -29,32 +29,30 @@ function longest_sub_norepeat(s) {
 
 function longest_sub_norepeat_opt(s) {
   let longest = 0;
-  let l = 0;
+  let l = 0, r = 0;
   let seenMap = {};
 
   if(s.length <= 1) {
     return s.length;
   }
-  while(s.length - l > longest) {
-    let currentLongest = 0;
-    for(let r = l; r < s.length; r++) {
+
+  while(longest < s.length - l) {
+    while(r < s.length) {
       let seenChar = s[r];
       if(seenMap[seenChar] === undefined || seenMap[seenChar] < l) {
         seenMap[seenChar] = r;
-        currentLongest++;
-        longest = Math.max(currentLongest, longest);
+        let currentLength = r - l + 1;
+        longest = Math.max(currentLength, longest);
+        r++;
       } else {
-        console.log('hey');
-        l = r;
-        seenMap[seenChar] = r;
+        l = seenMap[seenChar] + 1;
+        break;
       }
     }
   }
-  console.log(seenMap, longest);
-
-  // return longest;
+  return longest;
 }
-// console.log(longest_sub_norepeat_opt(testCase1));
+console.log(longest_sub_norepeat_opt(testCase1));
 console.log(longest_sub_norepeat_opt(testCase2));
-// console.log(longest_sub_norepeat_opt(testCase3));
-// console.log(longest_sub_norepeat_opt(testCase4));
+console.log(longest_sub_norepeat_opt(testCase3));
+console.log(longest_sub_norepeat_opt(testCase4));
