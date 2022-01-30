@@ -28,27 +28,23 @@ function longest_sub_norepeat(s) {
 }
 
 function longest_sub_norepeat_opt(s) {
-  let longest = 0;
-  let l = 0, r = 0;
-  let seenMap = {};
-
   if(s.length <= 1) {
     return s.length;
   }
+  let longest = 0;
+  let l = 0;
+  let seenMap = {};
+  for(let r = 0; r < s.length; r++) {
+    let seenChar = s[r], currentLength;
 
-  while(longest < s.length - l) {
-    while(r < s.length) {
-      let seenChar = s[r];
-      if(seenMap[seenChar] === undefined || seenMap[seenChar] < l) {
-        seenMap[seenChar] = r;
-        let currentLength = r - l + 1;
-        longest = Math.max(currentLength, longest);
-        r++;
-      } else {
-        l = seenMap[seenChar] + 1;
-        break;
-      }
+    // if current character has already been seen and its twin is not to the left of the l pointer,
+    // move l pointer to right of twin
+    if(seenMap[seenChar] !== undefined && seenMap[seenChar] >= l) {
+      l = seenMap[seenChar] + 1;
     }
+    seenMap[seenChar] = r;
+    currentLength = r - l + 1;
+    longest = Math.max(currentLength, longest);
   }
   return longest;
 }
