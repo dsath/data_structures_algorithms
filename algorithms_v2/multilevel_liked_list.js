@@ -6,7 +6,6 @@ class node {
     this.child = null;
   }
 }
-// let lists = [1,2,3,4,5,6,null,null,null,7,8,9,10,null,null,11,12];
 let lists = [1, 2, [3, [7, [8, [11, 12]], 9, 10]], 4, 5, 6];
 let lists2 = [1, 2, [3, [7, [8, [11, 12]], 9, 10]], [4, [5, [2, [99]], 4]], 5, 6];
 
@@ -34,18 +33,26 @@ function createMultiLevel(lists) {
   return head;
 }
 
+// map that shows level, parent node value and list
 function mapLevels(head, lists, level = 1) {
   let allActiveChildren = [];
   let currentList = []; 
 
-  currentNode = head;
+  currentNode = Array.isArray(head) ? head[1] : head;
   while(currentNode !== null) {
     if(currentNode.child) {
-      allActiveChildren.push(currentNode.child);
+      allActiveChildren.push([currentNode.value, currentNode.child]);
     }
     currentList.push(currentNode.value);
     currentNode = currentNode.next;
   }
+
+  if(level === 1) {
+    currentList = [null, currentList];
+  } else {
+    currentList = [head[0], currentList];
+  }
+
   if(lists[level] === undefined) {
     lists[level] = [];
     lists[level].push(currentList);
@@ -58,11 +65,17 @@ function mapLevels(head, lists, level = 1) {
   }
 }
 
+function printLevels(map) {
+  for(let level in map) {
+    console.log(level, map[level]);
+  }
+}
+
 let head = createMultiLevel(lists2);
 let levels = {};
 
 mapLevels(head, levels);
-console.log(levels);
+printLevels(levels);
 
 
 
