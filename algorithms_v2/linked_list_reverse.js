@@ -1,10 +1,10 @@
 let ls = require('../data_struct/linked_list.js');
 
-let myList = new ls.LinkedList(1);
+let myList = new ls.LinkedList(0);
+myList.append(1);
 myList.append(2);
 myList.append(3);
 myList.append(4);
-myList.append(5);
 
 
 function reverseLinkedList(head) {
@@ -20,47 +20,40 @@ function reverseLinkedList(head) {
 }
 
 function mnReverseLinkedList(head, m, n) {
-  let beforeM = null; let afterN = null;
-  let mNode = null; let nNode = null;
-  
-  
-  // find first node that will be reversed
-  let currentNode = head;
-  let prev = null
-  for(let i = 0; i < m; i++) {
-    prev = currentNode;
+  let position = 0, currentNode = head;
+  let start = head;
+
+  while(position < m) {
+    start = currentNode;
     currentNode = currentNode.next;
+    position++;
   }
-  beforeM = prev;
-  mNode = currentNode;
 
-  //reverse nodes until final node to be reveresed
-  for(let i = 0; i < n - m + 1; i++) {
-    console.log('hi');
-    let next = currentNode.next;
-    currentNode.next = prev;
-    prev = currentNode;
+  let newList = null, tail = currentNode;
+
+  while(position >= m && position <= n) {
+    const next = currentNode.next;
+    currentNode.next = newList;
+    newList = currentNode;
     currentNode = next;
+    position++;
   }
-  afterN = currentNode;
-  nNode = prev;
 
-  
-  if(beforeM) {
-    beforeM.next = nNode;
+  // if m === 0, start, tail, and head all point to the same node
+  start.next = newList;
+  tail.next = currentNode;
+
+  // return newList if head is included in the reversed portion of the array,
+  // else return the original head.
+  if(m > 0) {
+    return head;
   } else {
-    head = nNode;
+    return newList;
   }
-  mNode.next = afterN;
   return head;
 }
 
-  // console.log(`mNode:  ${mNode.value}`, `nNode: ${nNode.value}`, `beforeN: ${beforeM.value}`, `afterN: ${afterN.value}`);
-  // console.log(afterN);
-  // console.log(beforeM.next);
-
-// myList.tail is wrong after running the function
 console.log(myList.printList());
-myList.head = mnReverseLinkedList(myList.head, 4, 4);
+myList.head = mnReverseLinkedList(myList.head, 0, 4);
 console.log(myList.printList());
 
