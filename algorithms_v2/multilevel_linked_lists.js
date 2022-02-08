@@ -41,7 +41,7 @@ function mapLevels(head, lists, level = 1) {
   currentNode = Array.isArray(head) ? head[1] : head;
   while(currentNode !== null) {
     if(currentNode.child) {
-      allActiveChildren.push([currentNode.value, currentNode.child]);
+      allActiveChildren.push([`Parent value: ${currentNode.value}`, currentNode.child]);
     }
     currentList.push(currentNode.value);
     currentNode = currentNode.next;
@@ -67,15 +67,21 @@ function mapLevels(head, lists, level = 1) {
 
 function printLevels(map) {
   for(let level in map) {
-    console.log(level, map[level]);
+    console.log(JSON.stringify(level), JSON.stringify(map[level]));
   }
 }
 
-let head = createMultiLevel(lists2);
-let levels = {};
+// let head = createMultiLevel(lists2);
+// let levels = {};
 
-mapLevels(head, levels);
-printLevels(levels);
+// mapLevels(head, levels);
+// printLevels(levels);
+
+module.exports = {
+  createMultiLevel,
+  mapLevels,
+  printLevels,
+}
 
 
 
