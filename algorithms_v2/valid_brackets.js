@@ -6,42 +6,25 @@ let test5 = "{[]()}" // => true
 
 
 function validBrackets(s) {
-  let leftBrackets = "{[(";
+  let brackets = {
+    '(': ')',
+    '{': '}',
+    '[': ']'
+  }
   let stack = [];
-
   for(let i = 0; i < s.length; i++) {
-    if(leftBrackets.includes(s[i])) {
-      stack.push(s[i]);
+    let currentBracket = s[i];
+    if(brackets[currentBracket]) {
+      stack.push(currentBracket);
     } else {
       let leftBracket = stack.pop();
-      let rightBracket = s[i];
-      switch(leftBracket) {
-        case '{': 
-          if(rightBracket !== '}') {
-            return false;
-          }
-          break;
-        case '(':
-          if(rightBracket !== ')') {
-            return false;
-          }
-          break;
-        case '[':
-          if(rightBracket !== ']') {
-            return false;
-          }
-          break;
-        default:
-          return false
-          break;
+      let rightBracket = currentBracket;
+      if(rightBracket !== brackets[leftBracket]) {
+        return false;
       }
     }
   }
-  if(stack.length > 0) {
-    return false;
-  } else {
-    return true;
-  }
+  return stack.length === 0;
 }
 
 console.log(validBrackets(test1));
