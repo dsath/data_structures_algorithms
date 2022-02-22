@@ -165,24 +165,24 @@ class BinarySearchTree {
   }
 }
 
-const tree = new BinarySearchTree();
-tree.insert(9)
-tree.insert(4)
-tree.insert(6)
-tree.insert(20)
-tree.insert(170)
-tree.insert(15)
-tree.insert(1)
+// const tree = new BinarySearchTree();
+// tree.insert(9)
+// tree.insert(4)
+// tree.insert(6)
+// tree.insert(20)
+// tree.insert(170)
+// tree.insert(15)
+// tree.insert(1)
 
-// tree.remove(4);
-// tree.remove(6);
-// tree.remove(20);
-tree.remove(1);
-tree.remove(15);
-tree.remove(170);
-tree.remove(9);
-const treeString = JSON.stringify(traverse(tree.root));
-console.log(treeString);
+// // tree.remove(4);
+// // tree.remove(6);
+// // tree.remove(20);
+// tree.remove(1);
+// tree.remove(15);
+// tree.remove(170);
+// tree.remove(9);
+// const treeString = JSON.stringify(traverse(tree.root));
+// console.log(treeString);
 
 //     9
 //  4     20
@@ -194,4 +194,7 @@ function traverse(node) {
   tree.right = node.right === null ? null : traverse(node.right);
   return tree;
 }
+
+module.exports.BinarySearchTree = BinarySearchTree;
+
 

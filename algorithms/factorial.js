@@ -17,6 +17,14 @@ function findFactorialIterative(number) {
   return answer;
 }
 
+function tailFactorial(x, totalSoFar = 1) {
+  if (x === 0) {
+    return totalSoFar;
+  } else {
+    return tailFactorial(x - 1, totalSoFar * x);
+  }
+}
+
 let recursiveResult = findFactorialRecursive(15);
 console.log(recursiveResult);
 let iterativeResult = findFactorialIterative(15);
