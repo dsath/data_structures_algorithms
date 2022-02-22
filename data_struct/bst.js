@@ -11,157 +11,148 @@ class BinarySearchTree {
     this.root = null;
   }
   insert(value){
-    const recurse_insert = (node, newNode) => {
-      if(newNode.value < node.value) {
-        if(!node.left) {
-          node.left = newNode;
-        } else {
-          recurse_insert(node.left, newNode);
-        }
-      }
-
-      if(newNode.value > node.value) {
-        if(!node.right) {
-          node.right = newNode;
-        } else {
-          recurse_insert(node.right, newNode);
-        }
-      }
-    }
-    
     const newNode = new Node(value);
-    if(!this.root) {
+    if (this.root === null) {
       this.root = newNode;
     } else {
-      recurse_insert(this.root, newNode);
+      let currentNode = this.root;
+      while(true){
+        if(value < currentNode.value){
+          //Left
+          if(!currentNode.left){
+            currentNode.left = newNode;
+            return this;
+          }
+          currentNode = currentNode.left;
+        } else {
+          //Right
+          if(!currentNode.right){
+            currentNode.right = newNode;
+            return this;
+          }
+          currentNode = currentNode.right;
+        }
+      }
     }
-    return this;
   }
-  lookup(value) {
-    return this._find_recurse(this.root, value) === undefined ? false : true;
+  lookup(value){
+    if (!this.root) {
+      return false;
+    }
+    let currentNode = this.root;
+    while(currentNode){
+      if(value < currentNode.value){
+        currentNode = currentNode.left;
+      } else if(value > currentNode.value){
+        currentNode = currentNode.right;
+      } else if (currentNode.value === value) {
+        return currentNode;
+      }
+    }
+    return null
   }
 
   remove(value) {
-    if(!this.root) {
+    if (!this.root) {
       return false;
     }
+    let currentNode = this.root;
+    let parentNode = null;
+    while(currentNode){
+      if(value < currentNode.value){
+        parentNode = currentNode;
+        currentNode = currentNode.left;
+      } else if(value > currentNode.value){
+        parentNode = currentNode;
+        currentNode = currentNode.right;
+      } else if (currentNode.value === value) {
+        //We have a match, get to work!
 
-    // parent of node to remove
-    const firstParent = this.root.value === value ? new Node : this._find_parent_recurse(this.root, value);
-    const nodeToRemove = this._find_recurse(this.root, value);
+        //Option 1: No right child:
+        if (currentNode.right === null) {
+          if (parentNode === null) {
+            this.root = currentNode.left;
+          } else {
 
-    if(nodeToRemove.right) {
-      var replacingNode = this._find_smallest_recurse(nodeToRemove.right);
-      // parent of replacingNode to remove
-      var secondParent = this._find_parent_recurse(nodeToRemove.right, replacingNode.value);
-    }
+            //if parent > current value, make current left child a child of parent
+            if(currentNode.value < parentNode.value) {
+              parentNode.left = currentNode.left;
 
-    const change_pointers = () => {
-      replacingNode.right = nodeToRemove.right;
-      replacingNode.left = nodeToRemove.left;
-      if(firstParent.right === nodeToRemove) {
-        firstParent.right = replacingNode;
-      } else {
-        firstParent.left = replacingNode;
-      }
-    }
+            //if parent < current value, make left child a right child of parent
+            } else if(currentNode.value > parentNode.value) {
+              parentNode.right = currentNode.left;
+            }
+          }
 
-    // node to remove has no children
-    if(!nodeToRemove.right && !nodeToRemove.left) {
-      if(nodeToRemove.value === this.root.value) {
-        this.root = null;
-      }
-      if(firstParent.left === nodeToRemove) {
-        firstParent.left = null;
-      } else { 
-        firstParent.right = null;
-      }
-    }
+        //Option 2: Right child which doesnt have a left child
+        } else if (currentNode.right.left === null) {
+          currentNode.right.left = currentNode.left;
+          if(parentNode === null) {
+            this.root = currentNode.right;
+          } else {
 
-    // node to remove has left child but no right child
-    if(!nodeToRemove.right && nodeToRemove.left) {
-        if(nodeToRemove.value === this.root.value) {
-          this.root = this.root.left;
-        }
-        if(firstParent.right === nodeToRemove) {
-          firstParent.right = nodeToRemove.left;
+            //if parent > current, make right child of the left the parent
+            if(currentNode.value < parentNode.value) {
+              parentNode.left = currentNode.right;
+
+            //if parent < current, make right child a right child of the parent
+            } else if (currentNode.value > parentNode.value) {
+              parentNode.right = currentNode.right;
+            }
+          }
+
+        //Option 3: Right child that has a left child
         } else {
-          firstParent.left = nodeToRemove.left;
-        }
-    }
 
-    // node to remove has right child
-    if(nodeToRemove.right) {
-      if(nodeToRemove === this.root) {
-        this.root = replacingNode;
-      }
+          //find the Right child's left most child
+          let leftmost = currentNode.right.left;
+          let leftmostParent = currentNode.right;
+          while(leftmost.left !== null) {
+            leftmostParent = leftmost;
+            leftmost = leftmost.left;
+          }
 
-      // replacing node has no children
-      if(!replacingNode.right && !replacingNode.left) {
-        // remove secondParent pointer to replacingNode
-        if(secondParent) {
-          secondParent.left = null;
-        } else {
-          nodeToRemove.right = null;
+          //Parent's left subtree is now leftmost's right subtree
+          leftmostParent.left = leftmost.right;
+          leftmost.left = currentNode.left;
+          leftmost.right = currentNode.right;
+
+          if(parentNode === null) {
+            this.root = leftmost;
+          } else {
+            if(currentNode.value < parentNode.value) {
+              parentNode.left = leftmost;
+            } else if(currentNode.value > parentNode.value) {
+              parentNode.right = leftmost;
+            }
+          }
         }
-        change_pointers();
-      }
-      //replacing Node has a right child
-      else {
-        if(secondParent) {
-          secondParent.left = replacingNode.right; 
-        } else {
-          nodeToRemove.right = null;
-        }
-        change_pointers();
+      return true;
       }
     }
   }
 
-  _find_recurse(node, value) {
-    if(!node) {
-      return null;
-    } 
-    if(node.value === value) {
-      return node;
-    }
-    if(value < node.value) {
-      return this._find_recurse(node.left, value);
-    }
-    if(value > node.value) {
-      return this._find_recurse(node.right, value);
-    }
-  }
+  print() {
+    let parentQueue = [[undefined, this.root]];
+    let childrenQueue = [];
 
-  _find_parent_recurse(node, value) {
-    if(!node) {
-      return null;
-    } 
-    if(node.value === value) {
-      return null;
+    while(parentQueue.length > 0) {
+      let level = "";
+      while(parentQueue.length > 0) {
+        let currentNode = parentQueue.shift();
+        level = level + " " + currentNode[1].value + '-' + currentNode[0];
+        if(currentNode[1].left) {
+          childrenQueue.push([currentNode[1].value, currentNode[1].left]);
+        }
+        if(currentNode[1].right) {
+          childrenQueue.push([currentNode[1].value, currentNode[1].right]);
+        } 
+      }
+      console.log(level);
+      while(childrenQueue.length > 0) {
+        parentQueue.push(childrenQueue.shift());
+      }
     }
-    if(node.left && node.left.value === value) {
-      return node;
-    }
-    if(node.right && node.right.value === value) {
-      return node;
-    }
-    if(value < node.value) {
-      return this._find_parent_recurse(node.left, value);
-    }
-    if(value > node.value) {
-      return this._find_parent_recurse(node.right, value);
-    }
-  }
-
-  _find_smallest_recurse(node) {
-    if(!node) {
-      return null;
-    }
-    if(node.left === null) {
-      return node;
-    }
-    return this._find_smallest_recurse(node.left);
   }
 }
 
@@ -173,10 +164,11 @@ class BinarySearchTree {
 // tree.insert(170)
 // tree.insert(15)
 // tree.insert(1)
+// tree.print();
 
-// // tree.remove(4);
-// // tree.remove(6);
-// // tree.remove(20);
+// tree.remove(4);
+// tree.remove(6);
+// tree.remove(20);
 // tree.remove(1);
 // tree.remove(15);
 // tree.remove(170);
