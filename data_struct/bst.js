@@ -133,6 +133,10 @@ class BinarySearchTree {
   }
 
   print() {
+    if(!this.root) {
+      console.log('Error: null root');
+      return;
+    }
     let parentQueue = [[undefined, this.root]];
     let childrenQueue = [];
 
@@ -140,7 +144,7 @@ class BinarySearchTree {
       let level = "";
       while(parentQueue.length > 0) {
         let currentNode = parentQueue.shift();
-        level = level + " " + currentNode[1].value + '-' + currentNode[0];
+        level = level + " " + '(' + currentNode[1].value + ')' + '-' + currentNode[0];
         if(currentNode[1].left) {
           childrenQueue.push([currentNode[1].value, currentNode[1].left]);
         }
@@ -186,7 +190,6 @@ function traverse(node) {
   tree.right = node.right === null ? null : traverse(node.right);
   return tree;
 }
-
 module.exports.BinarySearchTree = BinarySearchTree;
 
 
