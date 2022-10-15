@@ -1,21 +1,17 @@
-// Given an array of integers, return the indices of the two numbers that add up to a given target? If none exist, return null.
-const {test} = require('./test/test.js');
+const { test } = require("./test/test");
 
+test(fn);
 
 function fn(array, target) {
-  const needToFind = {};
+  let myHash = {};
 
-  for(let i = 0; i < array.length; i++) {
-    const currentNum = array[i];
-    const firstIndex = needToFind[currentNum];
-
-    if(firstIndex >= 0) {
-      return [firstIndex, i];
+  for (let i = 0; i < array.length; i++) {
+    let currentNum = array[i];
+    if (myHash[currentNum] !== undefined) {
+      return [myHash[currentNum], i];
     } else {
-      needToFind[target - currentNum] = i;
+      myHash[target - currentNum] = i;
     }
   }
-
   return null;
 }
-test(fn);

@@ -1,24 +1,28 @@
+//////////
+// 
+//
+// insetion sort
+//
+//
+//////////
 const {test} = require('./test/test.js');
+test(fn)
 
+function fn(nums) {
 
-function fn(array) {
-  for (let i = 1; i < array.length; i++) {
-    let rCheck = i, lCheck = i-1;
-    while(lCheck >= 0) {
-      if(array[rCheck] < array[lCheck]) {
-        swap(array, rCheck, lCheck);
-      }
-      rCheck--; lCheck--;
+  for (let i = 1; i < nums.length; i++) {
+    let y = i;
+    while(y > 0 && nums[y] < nums[y-1]) {
+      swap(nums, y, y-1);
+      y--
     }
   }
-  return array;
-}
+  return nums;
 
+};
 function swap(array, i, y) {
   let temp = array[i];
   array[i] = array[y]
   array[y] = temp
 }
 
-
-test(fn);

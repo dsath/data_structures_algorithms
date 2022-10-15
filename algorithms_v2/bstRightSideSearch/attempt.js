@@ -1,24 +1,16 @@
-//////////
-// 
-//
-//
-//
-//
-//////////
-const {test} = require('./test/test.js');
-test(fn)
+const { test } = require("./test/test.js");
 
-function fn(root, count = 0, list = []) {
+test(fn);
 
-  if(count === list.length) {
-    list.push(root.value);
+// three different searches for binary tree inorder, preorder, postorder
+// we use preorder traversal, adding the first node seen at each level
+function fn(root, level = 0, nums = []) {
+  if (root === undefined) return;
+  if (nums[level] === undefined) {
+    nums[level] = root.value;
   }
-  count++;
-  if(root.right) {
-    fn(root.right, count, list); 
 
-  }
-  if(root.left) {
-    fn(root.left, count, list); 
-  }
-};
+  level++;
+  fn(root, level, nums);
+  return nums;
+}

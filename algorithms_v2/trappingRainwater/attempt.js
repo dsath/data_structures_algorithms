@@ -1,34 +1,31 @@
-// Trapping Rainwater
-// Given an array of integers representing an elevation map where the width of each bar is 1, return how much rainwater can be trapped.
-const {test} = require('./test/test.js');
+const { test } = require("./test/test");
 
-function fn(heights) {
-
+test(fn);
+function fn(nums) {
   let left = 0;
-  let right = heights.length - 1;
-  let leftMax = 0, rightMax = 0;
-  let totalRainwater = 0;
-  while(left < right) {
-    if(heights[left] < heights[right]) {
-      if(heights[left] < leftMax) {
-        totalRainwater += leftMax - heights[left];
+  let right = nums.length - 1;
+
+  let maxLeft = nums[left];
+  let maxRight = nums[right];
+
+  let totalWater = 0;
+
+  while (left < right) {
+    if (nums[left] < nums[right]) {
+      if (nums[left] < maxLeft) {
+        totalWater += maxLeft - nums[left];
       } else {
-        leftMax = heights[left];
+        maxLeft = nums[left];
       }
       left++;
     } else {
-      if(heights[right] < rightMax) {
-        totalRainwater += rightMax - heights[right];
+      if (nums[right] < maxRight) {
+        totalWater += maxRight - nums[right];
       } else {
-        rightMax = heights[right];
+        maxRight = nums[right];
       }
       right--;
     }
   }
-  return totalRainwater;
+  return totalWater;
 }
-
-test(fn);
-
-
-

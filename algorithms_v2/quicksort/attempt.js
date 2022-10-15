@@ -1,44 +1,47 @@
-const {test} = require('./test/test.js');
+const { test } = require("./test/test");
 
-function outer(array) {
-  const left = 0;
-  const right = array.length - 1;
-  return fn(array, left, right);
+test(fn_outer);
+
+function fn_outer(nums) {
+  fn(nums, 0, nums.length - 1);
+  return nums;
 }
 
-function fn(array, left, right) {
-  if(left < right) {
-    const index = hoares(array, left, right);
-    fn(array, left, index);
-    fn(array, index+1, right);
+function fn(nums, left, right) {
+  if (left < right) {
+    const index = hoaresPartition(nums, left, right);
+
+    fn(nums, left, index);
+    fn(nums, index + 1, right);
   }
-  return array;
 }
 
-function hoares(array, left, right) {
+function hoaresPartition(array, left, right) {
   const pivot = array[left];
+  // needs array, left index, right index
 
-  while(true) {
-    while(array[left] < pivot) {
+  while (true) {
+    //move left index until you find a value smaller than pivot
+
+    while (array[left] < pivot) {
       left++;
     }
 
-    while(array[right] > pivot) {
+    while (array[right] > pivot) {
       right--;
     }
 
-    if(left >= right) {
+    if (left >= right) {
       return right;
     }
     swap(array, left, right);
-    left++; right--;
+    left++;
+    right--;
   }
 }
 
-function swap(array, i, y) {
-  let temp = array[i];
-  array[i] = array[y]
-  array[y] = temp
+function swap(nums, left, right) {
+  const temp = nums[left];
+  nums[left] = nums[right];
+  nums[right] = temp;
 }
-
-test(outer);

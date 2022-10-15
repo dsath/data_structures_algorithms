@@ -1,46 +1,51 @@
-//////////
-// quickSelect
-// Given an unsorted array, return the kth largest element. It is the kth largest element in sorted order, not the kth distinct element.//
-//
-//
-//////////
-const {test} = require('./test/test.js');
-test(fn_outer);
+const { test } = require("./test/test");
+test(quickselect);
 
-function fn_outer(array, kth) {
-  const indexToFind = array.length - kth;
-  return fn(array, 0, array.length-1, indexToFind);
-}
-function fn(array, left, right, indexToFind) {
-  const index = lpartition(array, left, right);
+function quickselect(nums, kthLargest) {
+  const indexToFind = nums.length - kthLargest;
 
-  if(index === indexToFind) {
-    return array[index];
-  } else if(indexToFind > index) {
-    return fn(array, index+1, right, indexToFind);
-  } else if(indexToFind < index) {
-    return fn(array, left, index-1, indexToFind);
-  }
+  const valueAtIndex = find(nums, indexToFind, 0, nums.length - 1);
+  return valueAtIndex;
 }
 
-function lpartition(array, left, right) {
-  const pivot = array[right];
+function find(nums, indexToFind, left, right) {
+  if (left <= right) {
+    const currentIndex = lomutoPartition(nums, left, right);
 
-  let p = q = left;
-  while(q < right) {
-    if(array[q] < pivot) {
-      swap(array, p, q);
-      p++;
+    if (indexToFind > currentIndex) {
+      return find(nums, indexToFind, currentIndex + 1, right);
+    } else if (indexToFind < currentIndex) {
+      return find(nums, indexToFind, left, currentIndex - 1);
+    } else {
+      return nums[currentIndex];
     }
-    q++;
   }
-
-  swap(array, p, q);
-  return p;
 }
 
-function swap(array, i, y) {
-  let temp = array[i];
-  array[i] = array[y]
-  array[y] = temp
+function lomutoPartition(nums, left, right) {
+  const pivot = nums[right];
+
+  // goes forward to check new values for swapping
+  let p = left;
+  // stays back to keep track of value that needs swapped
+  let q = left;
+
+  while (p < right) {
+    if (nums[p] < pivot) {
+      swap(nums, p, q);
+      q++;
+    }
+    p++;
+  }
+
+  // final swap, swap q and the pivot
+  swap(nums, q, right);
+
+  return q;
+}
+
+function swap(nums, left, right) {
+  const temp = nums[left];
+  nums[left] = nums[right];
+  nums[right] = temp;
 }

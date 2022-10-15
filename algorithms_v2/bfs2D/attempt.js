@@ -1,39 +1,41 @@
-const {test} = require('../test/test.js');
+const { test } = require("./test/test");
 
-const directions = [
-  [-1, 0], //up
-  [0, 1], //right
-  [1, 0], //down
-  [0, -1] //left
-]
-
-const fn = function(matrix) {
-  const seen = 
-    new Array(matrix.length).fill(0).map(() => new Array(matrix[0].length).fill(false));
-
-  const values = [];
+var directions = [
+  [-1, 0],
+  [0, 1],
+  [1, 0],
+  [0, -1],
+];
+function fn(matrix) {
+  const seen = new Array(matrix.length)
+    .fill(1)
+    .map(() => new Array(matrix[0].length).fill(false));
 
   const queue = [[0, 0]];
+  const list = [];
 
-  while(queue.length) {
+  while (queue.length > 0) {
     const currentPos = queue.shift();
     const row = currentPos[0];
     const col = currentPos[1];
-    
-    if(row < 0 || row >= matrix.length || col < 0 || col >= matrix[0].length || seen[row][col]) {
+    if (
+      row < 0 ||
+      row >= matrix.length ||
+      col < 0 ||
+      col >= matrix[0].length ||
+      seen[row][col] === true
+    )
       continue;
-    }
-
+    list.push(matrix[row][col]);
     seen[row][col] = true;
-    values.push(matrix[row][col]);
-    
-    for(let i = 0; i < directions.length; i++) {
-      const currentDir = directions[i];
-      queue.push([row + currentDir[0], col + currentDir[1]]);
+
+    for (let i = 0; i < directions.length; i++) {
+      const direction = directions[i];
+      const newPosition = [row + direction[0], col + direction[1]];
+      queue.push(newPosition);
     }
   }
 
-  return values;
+  return list;
 }
-
 test(fn);

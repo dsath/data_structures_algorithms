@@ -1,32 +1,25 @@
-//////////
-// 
-//
-//
-//
-//
-//////////
-const {test} = require('./test/test.js');
-test(fn)
+const { test } = require("./test/test");
+test(fn);
 
-function fn(root) {
-  if(!root) return [];
-  let queue = [];
-  let levelOrder = [];
+function levelOrder(root) {
+  if (!root) return [];
+  let queue = [root];
+  const levelOrderTraversal = [];
 
-  queue.push(root);
-  while(queue.length > 0) {
-    const nodesOnCurrentLevel = queue.length;
-    levelOrder.push([]);
-    for(let i = 0; i < nodesOnCurrentLevel; i++) {
-      const currentNode = queue.shift();
-      levelOrder[levelOrder.length - 1].push(currentNode.val);
-      if(currentNode.left) {
+  while (queue.length > 0) {
+    const count = queue.length;
+    const currentLevel = [];
+    for (let i = 0; i < count; i++) {
+      currentNode = queue.shift();
+      currentLevel.push(currentNode.val);
+      if (currentNode.left) {
         queue.push(currentNode.left);
       }
-      if(currentNode.right) {
+      if (currentNode.right) {
         queue.push(currentNode.right);
       }
     }
+    levelOrderTraversal.push(currentLevel);
   }
-  return levelOrder;
-};
+  return levelOrderTraversal;
+}

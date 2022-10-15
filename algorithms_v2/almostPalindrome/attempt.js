@@ -1,30 +1,32 @@
+//////////
+// Given a string, determine if it is almost a palindrome (you can remove at most one character)
+//
+//
+//
+//
+//////////
 const {test} = require('./test/test.js');
-
-
+test(fn)
 
 function fn(s) {
-  s = s.replace(/[^a-zA-Z0-9]/g, "");
-  let l = 0, r = s.length-1;
+  let left = 0, right = s.length - 1;
 
-  while(l < r) {
-    if(s[l] !== s[r]) {
-      return fn2(s, l+1, r) || fn2(s, l, r-1);
+  while(left < right) {
+    if(s[left] !== s[right]) {
+      return isPalindrome(s, left+1, right) || isPalindrome(s, left, right-1);
     }
-    l++; r--;
+    left++; right--;
   }
   return true;
-}
 
-function fn2(s, l, r) {
+};
 
-  while(l < r) {
-    if(s[l] !== s[r]) {
+function isPalindrome(s, left, right) {
+  while(left < right) {
+    if(s[left] !== s[right]) {
       return false;
-
     }
-    l++; r--;
+    left++; right--;
   }
   return true;
 }
-
-test(fn);

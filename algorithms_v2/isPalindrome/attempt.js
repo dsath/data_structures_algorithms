@@ -1,48 +1,51 @@
-//////////
-// Given a string, determine if it is a palindrome. list 3 solutions
-//
-//
-//
-//
-//////////
-const {test} = require('./test/test.js');
-test(fn)
+const { test } = require("./test/test");
 
-// Matches reversed string
-function fn(s) {
-  s = s.replace(/[^a-zA-Z0-9]/g,"").toLowerCase();
+test(fn1);
+test(fn2);
+test(fn3);
 
-  return s === s.split("").reverse().join("");
-};
+// Make a new string by adding chars to a new array backwards of the original string to create the palindrome
+function fn1(s) {
+  s = s.replace(/[^A-Za-z0-9]/g, "").toLowerCase();
 
-// Matches character going out to in
+  let reversedS = "";
 
-function fn(s) {
-  s = s.replace(/[^a-zA-Z0-9]/g,"").toLowerCase();
+  for (let i = s.length - 1; i >= 0; i--) {
+    reversedS += s[i];
+  }
 
-  let p = 0, q = s.length -1;
+  return s === reversedS;
+}
 
-  while(p < q) {
-    if(s[p] !== s[q]) {
+// compare chars out to in to check Palindrome
+function fn2(s) {
+  s = s.replace(/[^A-Za-z0-9]/g, "").toLowerCase();
+  let p = 0;
+  let q = s.length - 1;
+  while (p < q) {
+    if (s[p] !== s[q]) {
       return false;
     }
-    p++;q--;
+    p++;
+    q--;
   }
+
   return true;
 }
 
-// Matches character going in to out
-function fn(s) {
-  s = s.replace(/[^a-zA-Z0-9]/g,"").toLowerCase();
-  let mid = (s.length - 1)/2
+// compare chars in to out to check Palindrome
+function fn3(s) {
+  s = s.replace(/[^A-Za-z0-9]/g, "").toLowerCase();
+  let mid = Math.floor((s.length - 1) / 2);
   let p = mid;
-  let q = (s.length%2) ? mid : mid+1;
+  let q = s.length % 2 === 0 ? mid + 1 : mid;
 
-  while(p >= 0) {
-    if(s[p] !== s[q]) {
+  while (p >= 0) {
+    if (s[p] !== s[q]) {
       return false;
     }
-    p--; q++;
+    p--;
+    q++;
   }
   return true;
 }

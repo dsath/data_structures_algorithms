@@ -1,72 +1,67 @@
-// Given an array, find a subarray inside that array that, when added together, holds the largest possible value. Or, in other words, find the maximum subarray inside the array. (recursive approach)
+const { test } = require("./test/test");
 
-// return a 3-tuple where (left-index, right-index, sum).
-const{test} = require('./test/test.js');
-
-
-
-
-function outer(array) {
-  const right = array.length - 1;
-  const left = 0;
-
-  return fn(array, left, right);
+test(fn);
+function fn(array) {
+  return maxSubarray(array, 0, array.length - 1);
 }
 
-function fn(array, left, right) {
+// recursive
+function maxSubarray(array, left, right) {
+  if (left < right) {
+    let mid = Math.floor((left + right) / 2);
 
-  if(right > left) {
-    const mid = Math.floor((left + right) / 2);
-    const leftMax = fn(array, left, mid);
-    const rightMax = fn(array, mid+1, right);
-    const currentMax = cross(array, left, right, mid);
+    const tuple1 = maxArrayFromMidpoint(array, left, right, mid);
+    const tuple2 = maxSubarray(array, left, mid);
+    const tuple3 = maxSubarray(array, mid + 1, right);
 
-    if(currentMax[2] > leftMax[2] && currentMax[2] > rightMax[2]) {
-      return currentMax;
-    } else if(leftMax[2] > rightMax[2]) {
-      return leftMax;
+    if (tuple1[2] > tuple2[2]) {
+      if (tuple1[2] > tuple3[2]) {
+        return tuple1;
+      } else {
+        return tuple3;
+      }
     } else {
-      return rightMax;
+      if (tuple2[2] > tuple3[2]) {
+        return tuple2;
+      } else {
+        return tuple3;
+      }
     }
+  } else {
+    return [left, right, array[left]];
   }
-
-  // if array is of length 1, return that single value
-  return [left, right, array[left]];
 }
 
+// find max array starting at midpoint
+function maxArrayFromMidpoint(array, left, right, mid) {
+  let p = mid;
+  let q = mid + 1;
 
-function cross(array, left, right, mid) {
-  let lMaxSum = -Infinity; 
-  let lMaxPointer = null;
-  let lPointer = mid;
+  let leftMaxSum = -Infinity;
+  let leftCurrentSum = 0;
+  let leftMaxIndex;
 
-  let currentSum = 0;
-  while(lPointer >= left) {
-    currentSum += array[lPointer];
-    if(currentSum > lMaxSum) {
-      lMaxSum = currentSum;
-      lMaxPointer = lPointer;
+  while (p >= left) {
+    leftCurrentSum += array[p];
+    if (leftCurrentSum > leftMaxSum) {
+      leftMaxSum = leftCurrentSum;
+      leftMaxIndex = p;
     }
-    lPointer--;
+    p--;
   }
 
-  let rMaxSum = -Infinity;
-  let rMaxPointer = null;
-  let rPointer = mid+1;
-  currentSum = 0;
-  while(rPointer <= right) {
-    currentSum += array[rPointer];
-    if(currentSum > rMaxSum) {
-      rMaxSum = currentSum;
-      rMaxPointer = rPointer;
+  let rightMaxSum = -Infinity;
+  let rightMaxIndex;
+  let rightCurrentSum = 0;
+
+  while (q <= right) {
+    rightCurrentSum += array[q];
+    if (rightCurrentSum > rightMaxSum) {
+      rightMaxSum = rightCurrentSum;
+      rightMaxIndex = q;
     }
-    rPointer++;
+    q++;
   }
 
-  return [lMaxPointer, rMaxPointer, lMaxSum + rMaxSum];
-
-
+  return [leftMaxIndex, rightMaxIndex, leftMaxSum + rightMaxSum];
 }
-
-test(outer);
-

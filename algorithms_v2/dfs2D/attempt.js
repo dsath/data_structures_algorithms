@@ -1,61 +1,46 @@
-// const {test} = require('./test/test.js');
+const { test } = require("./test/test");
+const directions = [
+  [-1, 0], // up
+  [0, 1], // right
+  [1, 0], // down
+  [0, -1], // left
+];
 
-
-function fn(array) {
-  const width = array.length;
-  const height = array[0].length;
-
-  const visited = new Array(width).fill(1).map((item) => new Array(height).fill(false));
+// set up seen array and calls the function to start the traversal
+function fn(matrix) {
   const traversal = [];
+  let position = [0, 0];
+  let seen = new Array(matrix.length)
+    .fill(0)
+    .map(() => new Array(matrix[0].length).fill(false));
 
-  const directions = {
-    up: [0, -1],
-    right: [1, 0],
-    down: [0, 1],
-    left: [-1, 0]
-  };
-
-  let currentPosition = [0, 0];
-
-  while(true) {
-    traversal.push(array[currentPosition[0]][currentPosition[1]])
-    visited[currentPosition[0]][currentPosition[1]] = true;
-
-    if(validateMove(currentPosition, directions.up, visited)) {
-      // console.log(validateMove(currentPosition, directions.up, visited));
-      // console.log(visited[currentPosition[0]][currentPosition[1]-1]); 
-      currentPosition = makeMove(currentPosition, directions.up);
-    } else if(validateMove(currentPosition, directions.right, visited)) {
-      currentPosition = makeMove(currentPosition, directions.right);
-    } else if(validateMove(currentPosition, directions.down, visited)) {
-      currentPosition = makeMove(currentPosition, directions.down);
-    } else if(validateMove(currentPosition, directions.left, visited)) {
-      currentPosition = makeMove(currentPosition, directions.left);
-    } else {
-      break;
-    }
-  }
+  traverse(matrix, seen, traversal, position);
 
   return traversal;
 }
 
-function validateMove(currentPos, move, visited) {
-  const width = visited.length;
-  const height = visited[0].length;
-  const newPosition = makeMove(currentPos, move);
+function traverse(matrix, seen, traversal, [y, x]) {
+  traversal.push(matrix[y][x]);
+  seen[y][x] = true;
 
-  if(newPosition[0] < width && 
-     newPosition[0] >= 0 &&
-     newPosition[1] < height &&
-     newPosition[1] >= 0 &&
-     visited[newPosition[0]][newPosition[1]] !== true) {
-    return true;
-  } else {
-    return false;
+  for (let index = 0; index < directions.length; index++) {
+    let curDirY = directions[index][0];
+    let curDirX = directions[index][1];
+    checkMove(matrix, seen, traversal, [y + curDirY, x + curDirX]);
   }
 }
 
-function makeMove(pos, move) {
-  return [pos[0] + move[0], pos[1] + move[1]]
+function checkMove(matrix, seen, traversal, [y, x]) {
+  if (
+    x >= matrix[0].length ||
+    x < 0 ||
+    y >= matrix.length ||
+    y < 0 ||
+    seen[y][x] === true
+  )
+    return;
+
+  traverse(matrix, seen, traversal, [y, x]);
 }
-console.log(fn([[1,8,7,6], [2,3,4,5]]));
+
+test(fn);

@@ -1,12 +1,5 @@
-//////////
-//
-//
-//
-//
-//
-//////////
 const { test } = require("./test/test.js");
-test(fn);
+
 function fn(list, m, n) {
   let position = 0;
   let myNode = list;
@@ -16,7 +9,7 @@ function fn(list, m, n) {
     myNode = myNode.next;
     position++;
   }
-  let prev = null;
+  const prev = null;
   let tail = myNode;
   while (position >= m && position <= n) {
     const next = myNode.next;
@@ -34,3 +27,5 @@ function fn(list, m, n) {
     return prev;
   }
 }
+
+test(fn);

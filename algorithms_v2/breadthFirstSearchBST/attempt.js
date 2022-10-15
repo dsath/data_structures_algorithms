@@ -1,27 +1,22 @@
-//////////
-// 
-//
-//
-//
-//
-//////////
-const {test} = require('./test/test.js');
-test(fn)
+const { test } = require("./test/test");
 
 function fn(root) {
-  let queue = [];
-  let list = [];
+  const queue = [root];
+  const list = [];
 
-  queue.push(root);
-  while(queue.length > 0) {
+  while (queue.length > 0) {
     const currentNode = queue.shift();
     list.push(currentNode.value);
-    if(currentNode.left) {
+
+    if (currentNode.left) {
       queue.push(currentNode.left);
     }
-    if(currentNode.right) {
+
+    if (currentNode.right) {
       queue.push(currentNode.right);
     }
   }
+
   return list;
-};
+}
+test(fn);

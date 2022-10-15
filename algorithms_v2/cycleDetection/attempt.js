@@ -1,31 +1,24 @@
-// Given a linked list, determine if it has a cylce. Return the node where cycle starts if there is a cycle. If there is not a cycle, return null.
+const { test } = require("./test/test");
 
-const{test} = require('./test/test.js');
+test(fn);
 
+function fn(root) {
+  let hare = root;
+  let turtle = root;
 
-
-function fn(head) {
-  let hare = tortoise = head;
-
-  while(hare !== null && hare.next !== null) {
+  while (hare !== null && hare.next !== null) {
     hare = hare.next.next;
-    tortoise = tortoise.next;
+    turtle = turtle.next;
 
-    if(hare === turtle) {
-      // cycle detected
-      let p1 = head, p2 = hare;
-
-      while(p1 !== p2) {
-        p1=p1.next;
-        p2=p2.next;
+    if (hare === turtle) {
+      let p = root;
+      let q = hare;
+      while (p !== q) {
+        p = p.next;
+        q = q.next;
       }
-      return p1;
+      return p;
     }
   }
   return null;
 }
-
-
-
-
-test(fn);

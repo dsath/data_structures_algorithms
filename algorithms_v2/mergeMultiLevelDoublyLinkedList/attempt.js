@@ -1,21 +1,21 @@
+//////////
 // mergeMultiLevelDoublyLinkedList
 // Given a doubly linked list, list nodes also have a child property that can point to a separate doubly linked list. These child lists can also have one or more child doubly linked lists of their own, and so on.
 
 // Return the list as a single level flattened doubly linked list.
-
-
+//
+//
+//
+//
+//////////
 const {test} = require('./test/test.js');
+test(fn)
 
-
-
-function fn(head) {
-  let currentNode = head;
-
+function fn(root) {
+  let currentNode = root;
   while(currentNode !== null) {
-    
     if(currentNode.child) {
       let tail = currentNode.child;
-
       while(tail.next !== null) {
         tail = tail.next;
       }
@@ -23,16 +23,12 @@ function fn(head) {
       if(tail.next !== null) {
         tail.next.prev = tail;
       }
+
       currentNode.next = currentNode.child;
       currentNode.next.prev = currentNode;
       currentNode.child = null;
     }
     currentNode = currentNode.next;
   }
-  return head;
-
-}
-
-
-test(fn);
-
+  return root;
+};

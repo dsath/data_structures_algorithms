@@ -1,32 +1,24 @@
-//////////
-//  Given a string containing only brackets (, [, {. Determine if it is valid. The string is valid if all bracketes close.
-//
-//
-//
-//
-//////////
-const {test} = require('./test/test.js');
+const { test } = require("./test/test");
 test(fn);
 
 const brackets = {
-  '(': ')',
-  '{': '}',
-  '[': ']'
-}
-function fn(s) {
+  "[": "]",
+  "{": "}",
+  "(": ")",
+};
 
+function fn(s) {
   const stack = [];
-  for(let i = 0; i < s.length; i++) {
-    const currentBracket = s[i];
-    if(brackets[currentBracket]) {
-      const leftBracket = currentBracket;
-      stack.push(leftBracket);
+
+  for (let index = 0; index < s.length; index++) {
+    const element = s[index];
+
+    if (brackets[element]) {
+      stack.push(element);
     } else {
-      const rightBracket = currentBracket;
-      const leftBracket = stack.pop();
-      if(brackets[leftBracket] !== rightBracket) {
-        return false;
-      }
+      const rightBracket = element;
+      const leftBracket = s.pop();
+      if (rightBracket !== brackets[leftBracket]) return false;
     }
   }
 

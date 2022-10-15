@@ -1,52 +1,45 @@
-//////////
-// 
-//
-// Given an array of integers sorted in ascending order, return the start and ending index of a given target value in an array, i,e, [x, y].
-// Your solution should run in O(log2N) time.
-//
-//
-//
-//////////
-const {test} = require('./test/test.js');
-test(fn)
+const { test } = require("./test/test");
+test(fn);
 
 function fn(array, target) {
-  let firstPosition = x = y = binarySearch(array, 0, array.length-1, target);
+  // find target
+  let start = binarySearch(array, target, 0, array.length - 1);
+  let x = start;
+  let y = start;
 
-  if(firstPosition === -1) return [-1, -1];
-
-  let temp1, temp2;
-
-  while(x !== -1) {
-    temp1 = x;
-    x = binarySearch(array, 0, x-1, target);
+  if (start === -1) {
+    return [-1, -1];
   }
 
-  x = temp1;
-
-  while(y !== -1) {
-    temp2 = y;
-    y = binarySearch(array, y+1, array.length-1, target);
+  // find right Edge index
+  let tempY;
+  while (y !== -1) {
+    tempY = y;
+    y = binarySearch(array, target, y + 1, array.length - 1);
   }
-  y = temp2;
+  y = tempY;
+
+  let tempX;
+  while (x !== -1) {
+    tempX = x;
+    x = binarySearch(array, target, 0, x - 1);
+  }
+  x = tempX;
 
   return [x, y];
+}
 
-};
-
-
-function binarySearch(array, left, right, numToFind) {
-  while(left <= right) {
-    let middle = Math.floor((left + right)/2);
-    if(numToFind < array[middle]) {
-      right = middle - 1;
-    } else if(numToFind > array[middle]) {
-      left = middle + 1;
+function binarySearch(array, target, left, right) {
+  while (left <= right) {
+    const nextCheckIndex = Math.floor((left + right) / 2);
+    const nextCheckValue = array[nextCheckIndex];
+    if (target < nextCheckValue) {
+      right = nextCheckIndex - 1;
+    } else if (target > nextCheckValue) {
+      left = nextCheckIndex + 1;
     } else {
-      return middle;
+      return nextCheckIndex;
     }
   }
   return -1;
 }
-
-
