@@ -10,6 +10,7 @@ const ROTTEN = 2;
 const FRESH = 1;
 const EMPTY = 0;
 
+test(orangesRotting);
 function orangesRotting(matrix) {
   if (matrix.length === 0) return 0;
 
