@@ -1,32 +1,21 @@
-//////////
-// Longest Substring Without Repeating Characters
-// Given a string, find the length of the longest substring without repeating characters.
-//
-//
-//
-//
-//////////
-const {test} = require('./test/test.js');
-test(fn)
+const { test } = require("./test/test");
 
+test(fn);
 function fn(s) {
-  const seen = {};
-  let maxLength = 0;
+  let charactersSeen = {};
+  let max = 0;
+  let p = 0;
+  let q = 0;
 
-
-  let p = q = 0;
-
-  while(q < s.length) {
-    const current = s[q];
-    const previousIndex = seen[current];
-    //there's a duplicate
-    if(previousIndex >= 0 &&  previousIndex >= p) {
-      p = previousIndex + 1;
+  while (q < s.length) {
+    const currentChar = s[q];
+    const currentCharPrevIndex = charactersSeen[currentChar];
+    if (p <= currentCharPrevIndex && charactersSeen[currentChar] >= 0) {
+      p = charactersSeen[currentChar] + 1;
     }
-    maxLength = Math.max(q-p+1, maxLength);
-    seen[current] = q;
+    charactersSeen[currentChar] = q;
+    max = Math.max(q - p + 1, max);
     q++;
   }
-
-  return maxLength;
-};
+  return max;
+}
