@@ -14,13 +14,14 @@ function mergesort(nums, left, right) {
     mergesort(nums, mid + 1, right);
     merge(nums, left, right, mid);
   }
+  return nums;
 }
 
 function merge(nums, left, right, mid) {
   let sortedNums = [];
   let p = left;
   let q = mid + 1;
-  while (p <= mid && q <= nums.length - 1) {
+  while (p <= mid && q <= right) {
     if (nums[p] < nums[q]) {
       sortedNums.push[nums[p]];
       p++;
@@ -35,7 +36,7 @@ function merge(nums, left, right, mid) {
     p++;
   }
 
-  while (q <= nums.length - 1) {
+  while (q <= right) {
     sortedNums.push[nums[q]];
     q++;
   }
