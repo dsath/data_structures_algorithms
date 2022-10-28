@@ -1,73 +1,60 @@
 const { test } = require("./test/test");
+
 const directions = [
-  [-1, 0], //up
-  [0, 1], //right
-  [1, 0], //down
-  [0, -1], //left
+  [-1, 0],
+  [0, 1],
+  [1, 0],
+  [0, -1],
 ];
 
 const ROTTEN = 2;
 const FRESH = 1;
 const EMPTY = 0;
-test(orangesRotting);
 
-function orangesRotting(matrix) {
-  if (matrix.length === 0) return 0;
+test(rottingOranges);
 
-  const queue = [];
+function rottingOranges(matrix) {
   let freshOranges = 0;
+  const queue = [];
+  let minutes = 0;
 
-  for (let row = 0; row < matrix.length; row++) {
-    for (let col = 0; col < matrix[0].length; col++) {
-      if (matrix[row][col] === ROTTEN) {
-        queue.push([row, col]);
-      }
-
-      if (matrix[row][col] === FRESH) {
+  for (let y = 0; y < matrix.length; y++) {
+    for (let x = 0; x < matrix[0].length; x++) {
+      if (matrix[y][x] === ROTTEN) {
+        queue.push([y, x]);
+      } else if (matrix[y][x] === FRESH) {
         freshOranges++;
       }
     }
   }
 
-  let minutes = 0;
-  let currentQueueSize = queue.length;
-
+  let currentQueueLength = queue.length;
   while (queue.length > 0) {
-    if (currentQueueSize === 0) {
-      currentQueueSize = queue.length;
-      minutes++;
+    if (currentQueueLength === 0) {
+      ++minutes;
+      currentQueueLength = queue.length;
     }
 
-    const currentOrange = queue.shift();
-    currentQueueSize--;
-    const row = currentOrange[0];
-    const col = currentOrange[1];
+    let pos = queue.shift();
+    currentQueueLength--;
 
     for (let i = 0; i < directions.length; i++) {
-      const currentDir = directions[i];
-      const nextRow = row + currentDir[0];
-      const nextCol = col + currentDir[1];
-
+      const direction = directions[i];
+      let [tryY, tryX] = [pos[0] + direction[0], pos[1] + direction[1]];
       if (
-        nextRow < 0 ||
-        nextRow >= matrix.length ||
-        nextCol < 0 ||
-        nextCol >= matrix[0].length
-      ) {
+        tryY < 0 ||
+        tryY >= matrix.length ||
+        tryX < 0 ||
+        tryX >= matrix[0].length
+      )
         continue;
-      }
 
-      if (matrix[nextRow][nextCol] === FRESH) {
-        matrix[nextRow][nextCol] = 2;
+      if (matrix[tryY][tryX] === FRESH) {
+        queue.push([tryY, tryX]);
+        matrix[tryY][tryX] = ROTTEN;
         freshOranges--;
-        queue.push([nextRow, nextCol]);
       }
     }
   }
-
-  if (freshOranges !== 0) {
-    return -1;
-  }
-
-  return minutes;
+  return freshOranges !== 0 ? -1 : minutes;
 }

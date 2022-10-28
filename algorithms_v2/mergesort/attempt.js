@@ -1,52 +1,19 @@
-//////////
-// mergesort
-//
-//
-//
-//
-//////////
-const {test} = require('./test/test.js');
-test(fn)
+const { test } = require("./test/test");
 
 function fn(nums) {
-  // console.log("before", nums);
-  return fn_inner(nums, 0, nums.length-1);
-  // console.log("after", nums);
-};
+  const result = mergesort(nums, 0, nums.length - 1);
 
-function fn_inner(nums, left, right) {
+  return result;
+}
+
+function mergesort() {
   if (left < right) {
-    const mid = Math.floor((left+right)/2);
-    fn_inner(nums, left, mid);
-    fn_inner(nums, mid+1, right);
+    const mid = Math.floor((left + right) / 2);
+    mergesort(nums, left, mid);
+    mergesort(nums, mid + 1, right);
     merge(nums, left, right, mid);
   }
-  return nums;
+  return;
 }
 
-function merge(nums, left, right, mid) {
-  const temp = [];
-  let l = left;
-  let r = mid+1;
-
-  while(l <= mid && r <= right) {
-    if(nums[l] < nums[r]) {
-      temp.push(nums[l]);
-      l++;
-    } else {
-      temp.push(nums[r]);
-      r++;
-    }
-  }
-
-  while(l <= mid) {
-    temp.push(nums[l]);
-    l++;
-  }
-
-  while(r <= right) {
-    temp.push(nums[r]);
-    r++;
-  }
-  nums.splice(left, right-left+1, ...temp);
-}
+function merge(nums, left, right, mid) {}
