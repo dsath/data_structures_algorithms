@@ -1,23 +1,21 @@
 const { test } = require("./test/test");
 
 const directions = [
-  [-1, 0],
-  [0, 1],
-  [1, 0],
-  [0, -1],
+  [-1, 0], //up
+  [0, 1], //right
+  [1, 0], //down
+  [0, -1], //left
 ];
 
 const ROTTEN = 2;
 const FRESH = 1;
 const EMPTY = 0;
 
-test(rottingOranges);
+test(fn);
 
-function rottingOranges(matrix) {
+function fn(matrix) {
   let freshOranges = 0;
   const queue = [];
-  let minutes = 0;
-
   for (let y = 0; y < matrix.length; y++) {
     for (let x = 0; x < matrix[0].length; x++) {
       if (matrix[y][x] === ROTTEN) {
@@ -28,19 +26,20 @@ function rottingOranges(matrix) {
     }
   }
 
-  let currentQueueLength = queue.length;
+  let currentQueue = queue.length;
+  let totalMinutes = 0;
   while (queue.length > 0) {
-    if (currentQueueLength === 0) {
-      ++minutes;
-      currentQueueLength = queue.length;
+    if (currentQueue === 0) {
+      currentQueue = queue.length;
+      totalMinutes++;
     }
 
-    let pos = queue.shift();
-    currentQueueLength--;
+    const [row, col] = queue.shift();
+    currentQueue--;
 
     for (let i = 0; i < directions.length; i++) {
       const direction = directions[i];
-      let [tryY, tryX] = [pos[0] + direction[0], pos[1] + direction[1]];
+      const [tryY, tryX] = [row + direction[0], col + direction[1]];
       if (
         tryY < 0 ||
         tryY >= matrix.length ||
@@ -50,11 +49,12 @@ function rottingOranges(matrix) {
         continue;
 
       if (matrix[tryY][tryX] === FRESH) {
-        queue.push([tryY, tryX]);
-        matrix[tryY][tryX] = ROTTEN;
         freshOranges--;
+        matrix[tryY][tryX] = ROTTEN;
+        queue.push([tryY, tryX]);
       }
     }
   }
-  return freshOranges !== 0 ? -1 : minutes;
+
+  return freshOranges === 0 ? totalMinutes : -1;
 }

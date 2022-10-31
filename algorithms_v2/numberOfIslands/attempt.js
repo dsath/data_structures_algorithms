@@ -6,27 +6,28 @@ const directions = [
   [1, 0],
   [0, -1],
 ];
-const WATER = "0";
+
 const LAND = "1";
+const WATER = "0";
+
 test(fn);
 
 function fn(matrix) {
-  let count = 0;
+  let numIslands = 0;
   for (let y = 0; y < matrix.length; y++) {
     for (let x = 0; x < matrix[0].length; x++) {
       if (matrix[y][x] === LAND) {
-        ++count;
+        console.log("hi");
+        numIslands++;
+        matrix[y][x] = WATER;
         const queue = [[y, x]];
-        matrix[y][x] = "0";
 
         while (queue.length > 0) {
-          const currentPos = queue.shift();
+          const [posY, posX] = queue.pop();
 
           for (let i = 0; i < directions.length; i++) {
-            const [tryY, tryX] = [
-              currentPos[0] + directions[i][0],
-              currentPos[1] + directions[i][1],
-            ];
+            const direction = directions[i];
+            const [tryY, tryX] = [posY + direction[0], posX + direction[1]];
 
             if (
               tryY < 0 ||
@@ -45,5 +46,6 @@ function fn(matrix) {
       }
     }
   }
-  return count;
+
+  return numIslands;
 }
