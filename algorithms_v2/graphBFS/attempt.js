@@ -1,35 +1,22 @@
-const adjacencyList = [
-  [1, 3],
-  [0],
-  [3, 8],
-  [0, 2, 4, 5],
-  [3, 6],
-  [3],
-  [4, 7],
-  [6],
-  [2],
-];
+const { test } = require("./test/test.js");
 
-function bfs(matrix) {
-  const seen = {};
+test(fn);
+
+function fn(graph) {
   const queue = [0];
-  const finalResult = [];
+  const seen = {};
+  const values = [];
 
   while (queue.length > 0) {
-    const currentNode = queue.shift();
-    seen[currentNode] = true;
-    finalResult.push(currentNode);
-
-    const connections = adjacencyList[currentNode];
+    const cn = queue.shift();
+    values.push(cn);
+    seen[cn] = true;
+    const connections = graph[cn];
 
     for (let i = 0; i < connections.length; i++) {
       const connection = connections[i];
-      if (!seen[connection]) {
-        queue.push(connection);
-      }
+      if (!seen[connection]) queue.push(connection);
     }
   }
-  return finalResult;
+  return values;
 }
-
-console.log(bfs(adjacencyList));
