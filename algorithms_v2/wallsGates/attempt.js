@@ -1,6 +1,5 @@
-const { test } = require("../TEST/test");
-const { testCases, additionalInfo } = require("./test/testCases");
-
+const { test } = require("../TEST/test.js");
+const { testCases, additionalInfo } = require("./test/testCases.js");
 const WALL = -1;
 const GATE = 0;
 const EMPTY = 2147483647;
@@ -12,18 +11,12 @@ const directions = [
 ];
 
 test(fn, testCases, additionalInfo);
+
 function fn(matrix) {
-  const queue = [];
   for (let y = 0; y < matrix.length; y++) {
     for (let x = 0; x < matrix[0].length; x++) {
-      const element = matrix[y][x];
-      if (element === GATE) queue.push([y, x]);
+      if (matrix[y][x] === GATE) dfs(matrix, y, x, 0);
     }
-  }
-
-  while (queue.length > 0) {
-    const [row, col] = queue.shift();
-    dfs(matrix, row, col, 0);
   }
   return matrix;
 }
@@ -39,11 +32,12 @@ function dfs(matrix, row, col, count) {
     return;
 
   matrix[row][col] = count;
-
   for (let i = 0; i < directions.length; i++) {
     const direction = directions[i];
-    const [tryY, tryX] = [row + direction[0], col + direction[1]];
-
-    dfs(matrix, tryY, tryX, count + 1);
+    dfs(matrix, row + direction[0], col + direction[1], count + 1);
   }
+  // we want to change value in cell if it is greater than count
+  // if cell is reached that is less than current count, just return
+  // all adjacent cells to that cell will also be smaller than the current
+  // count
 }
