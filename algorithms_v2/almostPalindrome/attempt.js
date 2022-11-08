@@ -5,28 +5,29 @@
 //
 //
 //////////
-const {test} = require('./test/test.js');
-test(fn)
 
 function fn(s) {
-  let left = 0, right = s.length - 1;
+  let q = 0;
+  let p = s.length - 1;
 
-  while(left < right) {
-    if(s[left] !== s[right]) {
-      return isPalindrome(s, left+1, right) || isPalindrome(s, left, right-1);
+  while (q < p) {
+    if (s[q] !== s[p]) {
+      return fn2(s, q + 1, p) || fn2(s, q, p - 1);
     }
-    left++; right--;
+    q++;
+    p--;
   }
+
   return true;
+}
 
-};
-
-function isPalindrome(s, left, right) {
-  while(left < right) {
-    if(s[left] !== s[right]) {
+function fn2(s, q, p) {
+  while (q < p) {
+    if (s[q] !== s[p]) {
       return false;
     }
-    left++; right--;
+    q++;
+    p--;
   }
   return true;
 }

@@ -34,7 +34,7 @@ const testCases = [
 ];
 
 let additionalInfo =
-  "more tests at https://leetcode.com/problems/walls-and-gates/";
+  "more tests at https://leetcode.com/problems/walls-and-gates/ NEED SUBSCRIPTION";
 
 module.exports.testCases = testCases;
 module.exports.additionalInfo = additionalInfo;

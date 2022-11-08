@@ -1,29 +1,23 @@
-//////////
-// selection sort
-//
-//
-//
-//
-//////////
-const {test} = require('./test/test.js');
+const { test } = require("./test/test");
+
 test(fn);
-
-
-function fn(array) {
-  for(let i = 0; i < array.length - 1; i++) {
-    let curLow = i;
-    for(let j = i + 1; j < array.length; j++) {
-      if(array[j] < array[curLow]) {
-        curLow = j;
+function fn(nums) {
+  for (let i = 0; i < nums.length; i++) {
+    let min = nums[i];
+    let minInd = i;
+    for (let y = i + 1; y < nums.length; y++) {
+      if (nums[y] < min) {
+        min = nums[y];
+        minInd = y;
       }
     }
-    swap(array, i, curLow);
+    swap(nums, minInd, i);
   }
-  return array;
+  return nums;
 }
 
-function swap(array, i, y) {
-  let temp = array[i];
-  array[i] = array[y]
-  array[y] = temp
+function swap(nums, left, right) {
+  const temp = nums[left];
+  nums[left] = nums[right];
+  nums[right] = temp;
 }

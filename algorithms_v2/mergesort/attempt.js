@@ -23,25 +23,24 @@ function merge(nums, left, right, mid) {
   let q = mid + 1;
   while (p <= mid && q <= right) {
     if (nums[p] < nums[q]) {
-      sortedNums.push[nums[p]];
+      sortedNums.push(nums[p]);
       p++;
     } else {
-      sortedNums.push[nums[q]];
+      sortedNums.push(nums[q]);
       q++;
     }
   }
 
   while (p <= mid) {
-    sortedNums.push[nums[p]];
+    sortedNums.push(nums[p]);
     p++;
   }
 
   while (q <= right) {
     sortedNums.push[nums[q]];
-    q++;
   }
 
-  for (let i = left; left <= right; i++) {
+  for (let i = left; i <= right; i++) {
     nums[i] = sortedNums[i - left];
   }
 }
